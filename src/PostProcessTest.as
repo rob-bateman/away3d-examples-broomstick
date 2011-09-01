@@ -11,10 +11,11 @@ package
 	import away3d.materials.BitmapMaterial;
 	import away3d.materials.methods.FogMethod;
 	import away3d.materials.methods.SlowFilteredShadowMapMethod;
+	import away3d.materials.methods.SoftShadowMapMethod;
 	import away3d.materials.utils.CubeMap;
 	import away3d.primitives.Plane;
 	import away3d.primitives.SkyBox;
-
+	
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -92,7 +93,7 @@ package
 			_controller.bodyMaterial.addMethod(new FogMethod(_view.camera.lens.far * .5, 0x000000));
 //			_controller.bodyMaterial.specularMethod = null;
 			_controller.bodyMaterial.lights = _lights;
-			_controller.bodyMaterial.shadowMethod = _shadowMethod2 = new SlowFilteredShadowMapMethod(_light3);
+			_controller.bodyMaterial.shadowMethod = new SoftShadowMapMethod(_light3);
 
 			Signature = Sprite(new SignatureSwf());
 			Signature.y = stage.stageHeight - Signature.height;
@@ -218,7 +219,7 @@ package
 
 			var material : BitmapMaterial = new BitmapMaterial(new RedLight().bitmapData);
 //			material.blendMode = BlendMode.ADD;
-			material.transparent = true;
+			material.alphaBlending = true;
 			material.addMethod(new FogMethod(_view.camera.lens.far * .5, 0x000000));
 			sprite = new Sprite3D(material, 200, 200);
 			_light.addChild(sprite);
@@ -226,7 +227,7 @@ package
 			sprite = new Sprite3D(material, 200, 200);
 			material.addMethod(new FogMethod(_view.camera.lens.far * .5, 0x000000));
 //			material.blendMode = BlendMode.ADD;
-			material.transparent = true;
+			material.alphaBlending = true;
 			_light2.addChild(sprite);
 
 			_envMap = new CubeMap(new EnvPosX().bitmapData, new EnvNegX().bitmapData,
@@ -239,7 +240,7 @@ package
 			material.ambientColor = 0x202030;
 			material.normalMap = new FloorNormals().bitmapData;
 			material.specularMap = new FloorSpecular().bitmapData;
-			material.shadowMethod = _shadowMethod = new SlowFilteredShadowMapMethod(_light3);
+			material.shadowMethod = new SoftShadowMapMethod(_light3);
 			material.addMethod(new FogMethod(_view.camera.lens.far * .5, 0x000000));
 //			material.specularMethod = null;
 			var plane : Plane = new Plane(material, 50000, 50000, 1, 1, false);
